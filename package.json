@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@mui/lab": "^5.0.0-alpha.113",
+    "@mui/material": "^5.11.1",
     "@next/font": "13.0.7",
     "antd": "^5.0.7",
     "axios": "^1.2.1",

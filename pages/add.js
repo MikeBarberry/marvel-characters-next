@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import LoadingButton from '@mui/lab/LoadingButton';
 import Snackbar from '@mui/material/Snackbar';
 
+import { StyledLoadingButton } from '../styles/styledComponentProvider';
 import marvelLogo from '../public/marvelLogo.jpeg';
 
 export default function Add() {
@@ -11,6 +11,7 @@ export default function Add() {
   const [description, setDescription] = useState('');
   const [thumbnail, setThumbnail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [serverMessage, setServerMessage] = useState('');
 
   const router = useRouter();
@@ -31,12 +32,20 @@ export default function Add() {
         body: JSON.stringify(characterInfo),
       });
       const message = await res.json();
-
+      setServerMessage(message);
+      setIsSnackbarOpen(true);
       setIsLoading(false);
-      router.push('/');
+      setTimeout(() => {
+        router.push('/');
+      }, 2000);
     } catch (err) {
       console.log(err);
     }
+  }
+
+  function closeSnackbar() {
+    setServerMessage('');
+    setIsSnackbarOpen(false);
   }
 
   return (
@@ -77,14 +86,15 @@ export default function Add() {
             required
           />
         </label>
-        <LoadingButton
+        <StyledLoadingButton
           color='primary'
           loading={isLoading}
           onClick={handleSubmit}>
           Submit
-        </LoadingButton>
+        </StyledLoadingButton>
         <Snackbar
-          autoHideDuration={4000}
+          open={isSnackbarOpen}
+          autoHideDuration={2000}
           message={serverMessage}
           onClose={closeSnackbar}
         />
