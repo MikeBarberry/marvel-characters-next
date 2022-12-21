@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mui/lab": "^5.0.0-alpha.113",
     "@next/font": "13.0.7",
     "antd": "^5.0.7",
     "axios": "^1.2.1",

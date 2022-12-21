@@ -1,5 +1,5 @@
-import clientPromise from '../../lib/mongodb';
 import { ObjectId } from 'mongodb';
+import clientPromise from '../../lib/mongodb';
 
 export default async function handler(req, res) {
   const characterInfo = req.body;
@@ -17,8 +17,9 @@ export default async function handler(req, res) {
       },
     };
     await db.collection('heroes').updateOne(filter, update);
-    res.status(200).json({ message: 'Character successfully updated' });
+    res.status(200).json('Character successfully updated');
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err });
   }
 }

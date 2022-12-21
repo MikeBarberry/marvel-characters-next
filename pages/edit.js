@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Snackbar from '@mui/lab/Snackbar';
 
 import marvelLogo from '../public/marvelLogo.jpeg';
 
@@ -10,6 +12,9 @@ export default function Edit() {
   const [description, setDescription] = useState('');
   const [originalThumbnail, setOriginalThumbnail] = useState('');
   const [newThumbnail, setNewThumbnail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [serverMessage, setServerMessage] = useState('');
 
   const router = useRouter();
 
@@ -31,13 +36,17 @@ export default function Edit() {
       newThumbnail,
     };
     try {
-      await fetch('/api/edit', {
+      setIsLoading(true);
+      const res = await fetch('/api/edit', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedCharacterInfo),
       });
+      const message = await res.json();
+      setServerMessage(message);
+      setIsLoading(false);
       router.push('/');
     } catch (err) {
       console.log(err);
@@ -47,17 +56,26 @@ export default function Edit() {
   async function handleDelete() {
     const characterId = { characterId: id };
     try {
-      await fetch('/api/delete', {
+      setIsLoading(true);
+      const res = await fetch('/api/delete', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(characterId),
       });
+      const message = await res.json();
+      setServerMessage(message);
+      setIsLoading(false);
       router.push('/');
     } catch (err) {
       console.log(err);
     }
+  }
+
+  function closeSnackbar() {
+    setServerMessage('');
+    setIsSnackbarOpen(false);
   }
 
   return (
@@ -100,17 +118,25 @@ export default function Edit() {
             required
           />
         </label>
-        <button
+        <LoadingButton
           style={{ marginRight: '20px' }}
           className='edit-button'
+          loading={isLoading}
           onClick={handleSubmit}>
           Submit
-        </button>
-        <button
+        </LoadingButton>
+        <LoadingButton
           className='edit-button'
+          loading={isLoading}
           onClick={handleDelete}>
           Delete
-        </button>
+        </LoadingButton>
+        <Snackbar
+          open={isSnackbarOpen}
+          message={serverMessage}
+          onClose={closeSnackbar}
+          autoHideDuration={4000}
+        />
       </div>
     </div>
   );

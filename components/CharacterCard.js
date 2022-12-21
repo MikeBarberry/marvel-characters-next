@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 export default function CharacterCard({ character, isHidden, toggleHidden }) {
-  const [editButtonClicked, setEditButtonClicked] = useState(false);
   const { _id, name, thumbnail, description } = character;
+  const [editButtonClicked, setEditButtonClicked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
