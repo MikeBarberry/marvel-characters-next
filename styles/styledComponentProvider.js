@@ -20,17 +20,23 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const StyledLoadingButton = styled(LoadingButton)`
-  background-color: #404040;
-  color: white;
-  font-size: 25px;
-  font-weight: bold;
-  font-family: Arial;
-  padding: 10px 60px;
-  border-radius: 5px;
-  margin: 10px 0px;
-  cursor: pointer;
-`;
+const StyledLoadingButton = (props) => {
+  return (
+    <LoadingButton
+      sx={{
+        backgroundColor: '#404040',
+        color: 'white',
+        fontSize: '25px',
+        fontWeight: 'bold',
+        fontFamily: 'Arial',
+        padding: '10px 60px',
+        borderRadius: '5px',
+        margin: '10px 0px',
+        cursor: 'pointer',
+      }}
+      {...props}></LoadingButton>
+  );
+};
 
 module.exports = {
   StyledLink,
