@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Snackbar from '@mui/material/Snackbar';
 
+import timeout from '../lib/timeout';
 import { StyledLoadingButton } from '../styles/styledComponentProvider';
 import marvelLogo from '../public/marvelLogo.jpeg';
 
@@ -12,7 +13,7 @@ export default function Add() {
   const [thumbnail, setThumbnail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [serverMessage, setServerMessage] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const router = useRouter();
 
@@ -22,6 +23,13 @@ export default function Add() {
       description,
       thumbnail,
     };
+    // reject attempts to submit with empty fields
+    if (!name || !description || !thumbnail) {
+      setSnackbarMessage('Input fields must not be empty.');
+      setIsSnackbarOpen(true);
+      await timeout();
+      return;
+    }
     try {
       setIsLoading(true);
       const res = await fetch('/api/add', {
@@ -32,7 +40,7 @@ export default function Add() {
         body: JSON.stringify(characterInfo),
       });
       const message = await res.json();
-      setServerMessage(message);
+      setSnackbarMessage(message);
       setIsSnackbarOpen(true);
       setIsLoading(false);
       setTimeout(() => {
@@ -44,7 +52,7 @@ export default function Add() {
   }
 
   function closeSnackbar() {
-    setServerMessage('');
+    setSnackbarMessage('');
     setIsSnackbarOpen(false);
   }
 
@@ -58,8 +66,10 @@ export default function Add() {
         <label>
           Name:
           <input
-            maxLength='16'
             type='text'
+            placeholder='Enter character name'
+            minLength='3'
+            maxLength='16'
             onChange={(e) => setName(e.target.value)}
             value={name}
             required
@@ -70,6 +80,8 @@ export default function Add() {
           Description:
           <input
             type='text'
+            placeholder='Enter a description of this character'
+            minLength='5'
             maxLength='120'
             onChange={(e) => setDescription(e.target.value)}
             value={description}
@@ -80,7 +92,8 @@ export default function Add() {
           Thumbnail:
           <input
             type='text'
-            placeholder='Enter URL to character image'
+            placeholder='Enter URL for character image'
+            minLength='6'
             onChange={(e) => setThumbnail(e.target.value)}
             value={thumbnail}
             required
@@ -95,7 +108,7 @@ export default function Add() {
         <Snackbar
           open={isSnackbarOpen}
           autoHideDuration={2000}
-          message={serverMessage}
+          message={snackbarMessage}
           onClose={closeSnackbar}
         />
       </div>

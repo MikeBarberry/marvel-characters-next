@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import LoadingButton from '@mui/lab/LoadingButton';
+import { StyledLoadingButton } from '../styles/styledComponentProvider';
 import Snackbar from '@mui/material/Snackbar';
 
+import timeout from '../lib/timeout';
 import marvelLogo from '../public/marvelLogo.jpeg';
 
 export default function Edit() {
@@ -15,7 +16,7 @@ export default function Edit() {
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [serverMessage, setServerMessage] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const router = useRouter();
 
@@ -36,6 +37,13 @@ export default function Edit() {
       description,
       newThumbnail,
     };
+    // reject attempts to submit with empty fields
+    if (!name || !description || !newThumbnail) {
+      setSnackbarMessage('Input fields must not be empty.');
+      setIsSnackbarOpen(true);
+      await timeout();
+      return;
+    }
     try {
       setIsSubmitLoading(true);
       const res = await fetch('/api/edit', {
@@ -46,7 +54,7 @@ export default function Edit() {
         body: JSON.stringify(updatedCharacterInfo),
       });
       const message = await res.json();
-      setServerMessage(message);
+      setSnackbarMessage(message);
       setIsSnackbarOpen(true);
       setIsSubmitLoading(false);
       setTimeout(() => {
@@ -69,7 +77,7 @@ export default function Edit() {
         body: JSON.stringify(characterId),
       });
       const message = await res.json();
-      setServerMessage(message);
+      setSnackbarMessage(message);
       setIsSnackbarOpen(true);
       setIsDeleteLoading(false);
       setTimeout(() => {
@@ -81,7 +89,7 @@ export default function Edit() {
   }
 
   function closeSnackbar() {
-    setServerMessage('');
+    setSnackbarMessage('');
     setIsSnackbarOpen(false);
   }
 
@@ -125,22 +133,20 @@ export default function Edit() {
             required
           />
         </label>
-        <LoadingButton
-          style={{ marginRight: '20px' }}
-          className='edit-button'
+        <StyledLoadingButton
           loading={isSubmitLoading}
           onClick={handleSubmit}>
           Submit
-        </LoadingButton>
-        <LoadingButton
-          className='edit-button'
+        </StyledLoadingButton>
+        <br />
+        <StyledLoadingButton
           loading={isDeleteLoading}
           onClick={handleDelete}>
           Delete
-        </LoadingButton>
+        </StyledLoadingButton>
         <Snackbar
           open={isSnackbarOpen}
-          message={serverMessage}
+          message={snackbarMessage}
           onClose={closeSnackbar}
           autoHideDuration={2000}
         />
