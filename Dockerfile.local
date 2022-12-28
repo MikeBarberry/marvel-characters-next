@@ -1,0 +1,7 @@
+# TODO: Update this file to run locally. I think next dev bypasses my custom server config 
+FROM public.ecr.aws/lambda/nodejs:18
+COPY ./ ${LAMBDA_TASK_ROOT}/
+ENV NODE_ENV=development
+RUN npm ci
+RUN npm run dev
+CMD ["lambda.handler"]

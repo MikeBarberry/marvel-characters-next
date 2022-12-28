@@ -18,7 +18,13 @@ export default function Home() {
   }
 
   if (error) return <div>An error occurred fetching the data</div>;
-  if (isLoading) return <LoadIndicator />;
+  if (isLoading) {
+    return (
+      <div className='Header Main-header'>
+        <LoadIndicator />
+      </div>
+    );
+  }
 
   return (
     <div className='Header Main-header'>

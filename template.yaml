@@ -1,8 +1,20 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: SAM Template for marvelCharacters
+Description: SAM Template for Marvel Characters Project
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Parameters:
+  AppName:
+    Type: String
+    Default: main
+  NodeEnv:
+    Type: String
+    Default: production
+  Region:
+    Type: String
+    Default: us-west-2
+  ExecutionRoleArn:
+    Type: String
+
 Globals:
   Function:
     Timeout: 15
@@ -18,9 +30,12 @@ Resources:
   MarvelCharactersApi:
     Type: AWS::Serverless::Api
     Properties:
-      Name: marvelCharacters
+      Name: MarvelCharactersApi
       Description: API Gateway for Marvel Characters site
-      StageName: Main
+      StageName: main
+      EndpointConfiguration: REGIONAL
+      BinaryMediaTypes:
+        - '/*/'
       Cors:
         AllowMethods: "'POST, GET, OPTIONS, PUT, DELETE'"
         AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
@@ -32,7 +47,8 @@ Resources:
       FunctionName: !GetAtt MarvelCharactersFunction.Arn
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub 'arn:aws:execute-api:us-west-2:${AWS::AccountId}:${MarvelCharactersApi}/*/*'
+      SourceAccount: !Ref 'AWS::AccountId'
+      SourceArn: !GetAtt MarvelCharactersApi.Arn
 
   MarvelCharactersFunction:
     Type: AWS::Serverless::Function
@@ -42,6 +58,14 @@ Resources:
       Dockerfile: Dockerfile
     Properties:
       PackageType: Image
+      Description: Marvel Characters Next.js Function
+      Role: !Ref ExecutionRoleArn
+      MemorySize: 1024
+      FunctionName: marvelCharactersFunction
+      Environment:
+        Variables:
+          NODE_ENV: !Ref NodeEnv
+          LAMBDA: 'true'
       Architectures:
         - x86_64
       Events:
