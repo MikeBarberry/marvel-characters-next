@@ -1,0 +1,11 @@
+version = 0.1
+[main]
+[main.deploy]
+[main.deploy.parameters]
+stack_name = "marvelCharacters"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-b9o1yeiki0ar"
+s3_prefix = "marvelCharacters"
+region = "us-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = ["MarvelCharactersFunction=095138843627.dkr.ecr.us-west-2.amazonaws.com/marvelcharactersf139f2f9/marvelcharactersfunctioncb075078repo"]

@@ -1,5 +1,11 @@
 import clientPromise from '../../lib/mongodb';
 
+/**
+ * @param {Object} newCharacter
+ * @param {string} newCharacter.name
+ * @param {string} newCharacter.description
+ * @param {string} newCharacter.thumbnail
+ */
 export default async function handler(req, res) {
   const newCharacter = req.body;
 

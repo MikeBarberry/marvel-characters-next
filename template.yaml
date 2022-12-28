@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for marvelCharacters
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 15
+
+Resources:
+  MetaLogs:
+    Type: AWS::Logs::LogGroup
+    DependsOn:
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${MarvelCharactersFunction}'
+      RententionInDays: 7
+
+  MarvelCharactersApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: marvelCharacters
+      Description: API Gateway for Marvel Characters site
+      StageName: Main
+      Cors:
+        AllowMethods: "'POST, GET, OPTIONS, PUT, DELETE'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+
+  ApiGatewayInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt MarvelCharactersFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:us-west-2:${AWS::AccountId}:${MarvelCharactersApi}/*/*'
+
+  MarvelCharactersFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      DockerTag: nodejs18.x-v1
+      DockerContext: .
+      Dockerfile: Dockerfile
+    Properties:
+      PackageType: Image
+      Architectures:
+        - x86_64
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MarvelCharactersApi
+            Path: /
+            Method: ANY
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MarvelCharactersApi
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  HelloWorldApi:
+    Description: 'API Gateway endpoint URL for Prod stage for Hello World function'
+    Value: !Sub 'https://${MarvelCharactersApi}.execute-api.${AWS::Region}.amazonaws.com/main/'
+  MarvelCharactersFunction:
+    Description: 'Hello World Lambda Function ARN'
+    Value: !GetAtt MarvelCharactersFunction.Arn
+  MarvelCharactersFunctionIamRole:
+    Description: 'Implicit IAM Role created for Hello World function'
+    Value: !GetAtt MarvelCharactersFunctionRole.Arn
