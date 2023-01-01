@@ -1,79 +1,74 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: SAM Template for marvelCharacters
+Description: 'lambda-nodejs18.x
+
+  SAM Template for Marvel-Characters-Next
+
+  '
 Globals:
   Function:
     Timeout: 15
+    MemorySize: 128
 Resources:
-  MetaLogs:
-    Type: AWS::Logs::LogGroup
-    DependsOn: null
-    Properties:
-      LogGroupName:
-        Fn::Sub: /aws/lambda/${MarvelCharactersFunction}
-      RententionInDays: 7
-  MarvelCharactersApi:
+  MarvelCharactersNextApi:
     Type: AWS::Serverless::Api
     Properties:
-      Name: marvelCharacters
-      Description: API Gateway for Marvel Characters site
-      StageName: Main
-      Cors:
-        AllowMethods: '''POST, GET, OPTIONS, PUT, DELETE'''
-        AllowHeaders: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
-        AllowOrigin: '''*'''
-  ApiGatewayInvokePermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName:
-        Fn::GetAtt:
-        - MarvelCharactersFunction
-        - Arn
-      Action: lambda:InvokeFunction
-      Principal: apigateway.amazonaws.com
-      SourceArn:
-        Fn::Sub: arn:aws:execute-api:us-west-2:${AWS::AccountId}:${MarvelCharactersApi}/*/*
-  MarvelCharactersFunction:
+      Name: Marvel-Characters-Api
+      Description: API for Marvel Characters
+      StageName: Prod
+      EndpointConfiguration: REGIONAL
+      BinaryMediaTypes:
+      - '*/*'
+  MarvelCharactersNextFunction:
     Type: AWS::Serverless::Function
-    Metadata:
-      DockerContext: /home/mbarberry/projects/personal/marvelcharacters-next
-      DockerTag: nodejs18.x-v1
-      Dockerfile: Dockerfile
-      SamResourceId: MarvelCharactersFunction
     Properties:
       PackageType: Image
       Architectures:
       - x86_64
       Events:
-        ProxyApiRoot:
+        ProxyRootApi:
           Type: Api
           Properties:
             RestApiId:
-              Ref: MarvelCharactersApi
+              Ref: MarvelCharactersNextApi
             Path: /
-            Method: ANY
-        ProxyApiGreedy:
+            Method: any
+        ProxyPlusApi:
           Type: Api
           Properties:
             RestApiId:
-              Ref: MarvelCharactersApi
+              Ref: MarvelCharactersNextApi
             Path: /{proxy+}
-            Method: ANY
-      ImageUri: marvelcharactersfunction:nodejs18.x-v1
+            Method: any
+      ImageUri: marvelcharactersnextfunction:nodejs18.x-v1
+    Metadata:
+      DockerContext: /Users/mikebarberry/Projects/Personal/marvel-characters-next/marvel-characters
+      DockerTag: nodejs18.x-v1
+      Dockerfile: Dockerfile
+      SamResourceId: MarvelCharactersNextFunction
+  MyApiMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Properties:
+      DomainName: marvel-characters.link
+      ApiId:
+        Ref: MarvelCharactersNextApi
+      Stage: Prod
+      ApiMappingKey: main
 Outputs:
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
+  MarvelCharactersNextApi:
+    Description: API Gateway endpoint URL for Prod stage for Marvel Characters Next
+      function
     Value:
-      Fn::Sub: https://${MarvelCharactersApi}.execute-api.${AWS::Region}.amazonaws.com/main/
-  MarvelCharactersFunction:
+      Fn::Sub: https://${MarvelCharactersNextApi}.execute-api.${AWS::Region}.amazonaws.com/main
+  MarvelCharactersNextFunction:
     Description: Hello World Lambda Function ARN
     Value:
       Fn::GetAtt:
-      - MarvelCharactersFunction
+      - MarvelCharactersNextFunction
       - Arn
-  MarvelCharactersFunctionIamRole:
+  MarvelCharactersNextFunctionIamRole:
     Description: Implicit IAM Role created for Hello World function
     Value:
       Fn::GetAtt:
-      - MarvelCharactersFunctionRole
+      - MarvelCharactersNextFunctionRole
       - Arn

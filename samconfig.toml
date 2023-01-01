@@ -1,16 +1,10 @@
 version = 0.1
-
-[main.build.parameters]
-template_file="./template.yaml"
-manifest="package.json"
-
-[main.deploy.parameters]
-profile="default"
-region="us-west-2"
-stack_name = "marvel-characters-sam"
-s3_bucket = "marvel-characters-sam"
-s3_prefix = "main"
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "marvel-characters"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-hnxkfbkczf4f"
+s3_prefix = "marvel-characters"
 region = "us-west-2"
-confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
-image_repository = "095138843627.dkr.ecr.us-west-2.amazonaws.com/marvel-characters-sam"
+image_repositories = ["MarvelCharactersNextFunction=095138843627.dkr.ecr.us-west-2.amazonaws.com/marvelcharacters04b4a9a6/marvelcharactersnextfunctione1cf85b5repo"]
