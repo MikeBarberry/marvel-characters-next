@@ -1,9 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  lambda-nodejs18.x
-
-  SAM Template for Marvel-Characters-Next
+Description: SAM Template for Marvel Characters Next Project
 
 Globals:
   Function:
@@ -16,62 +13,41 @@ Resources:
     Properties:
       Name: Marvel-Characters-Api
       Description: API for Marvel Characters
-      StageName: Prod
+      StageName: main
       EndpointConfiguration: REGIONAL
       BinaryMediaTypes:
-        - '*/*'
+        - '*'
 
   MarvelCharactersNextFunction:
     Type: AWS::Serverless::Function
     Properties:
+      Environment:
+        Variables:
+          NODE_ENV: production
       PackageType: Image
       Architectures:
         - x86_64
       Events:
-        ProxyRootApi:
+        Root:
           Type: Api
           Properties:
-            RestApiId: !Ref MarvelCharactersNextApi
+            RestApiId:
+              Ref: MarvelCharactersNextApi
             Path: /
-            Method: any
-        ProxyPlusApi:
+            Method: ANY
+
+        ProxyPlus:
           Type: Api
           Properties:
-            RestApiId: !Ref MarvelCharactersNextApi
+            RestApiId:
+              Ref: MarvelCharactersNextApi
             Path: /{proxy+}
-            Method: any
+            Method: ANY
+
     Metadata:
       DockerTag: nodejs18.x-v1
       DockerContext: ./marvel-characters
       Dockerfile: Dockerfile
-
-  MyApiMapping:
-    Type: 'AWS::ApiGatewayV2::ApiMapping'
-    DependsOn:
-      - MarvelCharactersNextApi
-      - MarvelCharactersNextFunction
-      - LambdaApiGatewayExecutionPermission
-    Properties:
-      DomainName: marvel-characters.link
-      ApiId: !Ref MarvelCharactersNextApi
-      Stage: Prod
-      ApiMappingKey: main
-
-  LambdaApiGatewayExecutionPermission:
-  Type: AWS::Lambda::Permission
-  Properties:
-    Action: lambda:InvokeFunction
-    FunctionName: !GetAtt MarvelCharactersNextFunction.Arn
-    Principal: apigateway.amazonaws.com
-    SourceArn: !Join
-      - ''
-      - - 'arn:aws:execute-api:'
-        - !Ref AWS::Region
-        - ':'
-        - !Ref AWS::AccountId
-        - ':'
-        - !Ref MarvelCharactersNextApi
-        - '/*/*'
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

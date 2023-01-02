@@ -1,10 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: 'lambda-nodejs18.x
-
-  SAM Template for Marvel-Characters-Next
-
-  '
+Description: SAM Template for Marvel Characters Next Project
 Globals:
   Function:
     Timeout: 15
@@ -15,45 +11,40 @@ Resources:
     Properties:
       Name: Marvel-Characters-Api
       Description: API for Marvel Characters
-      StageName: Prod
+      StageName: main
       EndpointConfiguration: REGIONAL
       BinaryMediaTypes:
-      - '*/*'
+      - '*'
   MarvelCharactersNextFunction:
     Type: AWS::Serverless::Function
     Properties:
+      Environment:
+        Variables:
+          NODE_ENV: production
       PackageType: Image
       Architectures:
       - x86_64
       Events:
-        ProxyRootApi:
+        Root:
           Type: Api
           Properties:
             RestApiId:
               Ref: MarvelCharactersNextApi
             Path: /
-            Method: any
-        ProxyPlusApi:
+            Method: ANY
+        ProxyPlus:
           Type: Api
           Properties:
             RestApiId:
               Ref: MarvelCharactersNextApi
             Path: /{proxy+}
-            Method: any
+            Method: ANY
       ImageUri: marvelcharactersnextfunction:nodejs18.x-v1
     Metadata:
-      DockerContext: /Users/mikebarberry/Projects/Personal/marvel-characters-next/marvel-characters
+      DockerContext: /Users/mbarberry/Projects/Web/Personal/marvel-characters-next/marvel-characters
       DockerTag: nodejs18.x-v1
       Dockerfile: Dockerfile
       SamResourceId: MarvelCharactersNextFunction
-  MyApiMapping:
-    Type: AWS::ApiGatewayV2::ApiMapping
-    Properties:
-      DomainName: marvel-characters.link
-      ApiId:
-        Ref: MarvelCharactersNextApi
-      Stage: Prod
-      ApiMappingKey: main
 Outputs:
   MarvelCharactersNextApi:
     Description: API Gateway endpoint URL for Prod stage for Marvel Characters Next
