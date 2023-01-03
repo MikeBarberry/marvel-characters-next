@@ -1,7 +1,5 @@
 const path = require('path');
 
-console.log(process.env.NODE_ENV);
-
 const NextServer = require('next/dist/server/next-server').default;
 const { config } = require('./.next/required-server-files.json');
 const express = require('express');

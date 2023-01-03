@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useSWR from 'swr';
 import Image from 'next/image';
 
+import marvelLogoPath from '../lib/marvelLogoPath';
 import apiUri from '../lib/apiUri';
 import { StyledLink } from '../styles/styledComponentProvider';
 import CharacterCard from '../components/CharacterCard';
@@ -29,7 +30,7 @@ export default function Home() {
 
   return (
     <div className='Header Main-header'>
-      <Image src={marvelLogo} alt='Marvel Logo' />
+      <Image src={marvelLogoPath} alt='Marvel Logo' />
       <StyledLink href='/add'>Add</StyledLink>
       <div className='hero-list'>
         {data &&
