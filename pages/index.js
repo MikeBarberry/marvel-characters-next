@@ -1,13 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react';
 import useSWR from 'swr';
-import Image from 'next/image';
 
-import marvelLogoPath from '../lib/marvelLogoPath';
-import apiUri from '../lib/apiUri';
+import { apiUri, imageUri } from '../lib/adjustedUris';
 import { StyledLink } from '../styles/styledComponentProvider';
 import CharacterCard from '../components/CharacterCard';
 import LoadIndicator from '../components/LoadIndicator';
-import marvelLogo from '../public/marvelLogo.jpeg';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -30,7 +28,7 @@ export default function Home() {
 
   return (
     <div className='Header Main-header'>
-      <Image src={marvelLogoPath} alt='Marvel Logo' />
+      <img src='marvelLogo.jpeg' alt='Marvel Logo' />
       <StyledLink href='/add'>Add</StyledLink>
       <div className='hero-list'>
         {data &&

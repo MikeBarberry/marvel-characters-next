@@ -1,12 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { StyledLoadingButton } from '../styles/styledComponentProvider';
 import Snackbar from '@mui/material/Snackbar';
 
-import apiUri from '../lib/apiUri';
+import { apiUri, imageUri } from '../lib/adjustedUris';
 import timeout from '../lib/timeout';
-import marvelLogo from '../public/marvelLogo.jpeg';
 
 export default function Edit() {
   const [id, setId] = useState('');
@@ -38,7 +37,6 @@ export default function Edit() {
       description,
       newThumbnail,
     };
-    // reject attempts to submit with empty fields
     if (!name || !description || !newThumbnail) {
       setSnackbarMessage('Input fields must not be empty.');
       setIsSnackbarOpen(true);
@@ -96,7 +94,7 @@ export default function Edit() {
 
   return (
     <div className='Header Main-header'>
-      <Image src={marvelLogo} alt='Marvel Logo' />
+      <img src='marvelLogo.jpeg' alt='Marvel Logo' />
       <div
         className='edit-container'
         style={{ backgroundImage: `url(${originalThumbnail})` }}
