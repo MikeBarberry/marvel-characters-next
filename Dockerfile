@@ -5,13 +5,4 @@ COPY ./ ./
 ENV NODE_ENV=production
 RUN npm ci --omit=dev 
 RUN npm run build
-COPY public/ .next/static/media/
-COPY public/ .next/standalone/static/media/
-RUN ls -a 
-RUN ls .next
-RUN ls .next/static
-RUN ls -R .next/static/media/
-RUN ls .next/standalone/static/media
-RUN ls .next/standalone
-
 CMD ["lambda.handler"]
