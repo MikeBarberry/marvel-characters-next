@@ -1,1 +1,1 @@
-Version 2.0 of Marvel Characters built with [Next.js](https://nextjs.org/) [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). And deployed on AWS Lambda with a custom API Gateway domain.
+Version 2.0 of Marvel Characters built with [Next.js](https://nextjs.org/) [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). Deployed on AWS Lambda as a Docker image with a custom API Gateway domain.
