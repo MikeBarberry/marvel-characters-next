@@ -4,4 +4,6 @@ COPY ./ ${LAMBDA_TASK_ROOT}/
 ENV NODE_ENV=production
 RUN npm ci --omit=dev 
 RUN npm run build
+COPY ./public/ ./.next/assets/
+RUN ls .next/assets
 CMD ["lambda.handler"]

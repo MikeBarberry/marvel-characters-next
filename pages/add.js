@@ -57,8 +57,13 @@ export default function Add() {
 
   return (
     <div className='Header Main-header'>
-      <img src='marvelLogo.jpeg' alt='Marvel Logo' />
-      <div className='add-container'>
+      <img src={`${imageUri}marvelLogo.jpeg`} alt='Marvel Logo' />
+      <div
+        className='add-container'
+        style={{
+          backgroundImage: 'url("' + imageUri + 'addPageBackground.jpeg")',
+        }}
+      >
         <label>
           Name:
           <input

@@ -94,7 +94,7 @@ export default function Edit() {
 
   return (
     <div className='Header Main-header'>
-      <img src='marvelLogo.jpeg' alt='Marvel Logo' />
+      <img src={`${imageUri}marvelLogo.jpeg`} alt='Marvel Logo' />
       <div
         className='edit-container'
         style={{ backgroundImage: `url(${originalThumbnail})` }}

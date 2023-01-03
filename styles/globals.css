@@ -143,7 +143,6 @@ input[type='submit']:hover {
 }
 
 .add-container {
-  background-image: url('../public/addPageBackground.jpeg');
   min-height: 700px;
   background-position: center;
   background-repeat: no-repeat;

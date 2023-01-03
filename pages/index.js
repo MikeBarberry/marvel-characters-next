@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <div className='Header Main-header'>
-      <img src='marvelLogo.jpeg' alt='Marvel Logo' />
+      <img src={`${imageUri}marvelLogo.jpeg`} alt='Marvel Logo' />
       <StyledLink href='/add'>Add</StyledLink>
       <div className='hero-list'>
         {data &&
