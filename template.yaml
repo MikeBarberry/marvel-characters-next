@@ -46,7 +46,7 @@ Resources:
 
     Metadata:
       DockerTag: nodejs18.x-v1
-      DockerContext: ./marvel-characters
+      DockerContext: .
       Dockerfile: Dockerfile
 
 Outputs:

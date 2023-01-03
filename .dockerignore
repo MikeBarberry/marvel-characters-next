@@ -1,0 +1,10 @@
+node_modules
+.aws-sam
+.next
+.dockerignore
+.eslintrc.json
+.gitignore
+.git 
+readme.md
+samconfig.toml
+template.yaml
