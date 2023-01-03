@@ -7,6 +7,12 @@ Globals:
     Timeout: 15
     MemorySize: 128
 
+Parameters:
+  CertificateArn:
+    Type: String
+  HostedZoneId:
+    Type: String
+
 Resources:
   MarvelCharactersNextApi:
     Type: AWS::Serverless::Api
@@ -17,6 +23,14 @@ Resources:
       EndpointConfiguration: REGIONAL
       BinaryMediaTypes:
         - '*'
+      Domain:
+        DomainName: marvel-characters.link
+        CertificateArn:
+          Ref: CertificateArn
+        EndpointConfiguration: REGIONAL
+        Route53:
+          HostedZoneId:
+            Ref: HostedZoneId
 
   MarvelCharactersNextFunction:
     Type: AWS::Serverless::Function
@@ -55,7 +69,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   MarvelCharactersNextApi:
     Description: 'API Gateway endpoint URL for Prod stage for Marvel Characters Next function'
-    Value: !Sub 'https://${MarvelCharactersNextApi}.execute-api.${AWS::Region}.amazonaws.com/main'
+    Value: !Sub 'https://${MarvelCharactersNextApi.DomainName}'
   MarvelCharactersNextFunction:
     Description: 'Hello World Lambda Function ARN'
     Value: !GetAtt MarvelCharactersNextFunction.Arn
