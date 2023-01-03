@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { StyledLoadingButton } from '../styles/styledComponentProvider';
 import Snackbar from '@mui/material/Snackbar';
 
-import { apiUri, imageUri } from '../lib/adjustedUris';
+import { apiUri, marvelLogo } from '../lib/utils';
 import timeout from '../lib/timeout';
 
 export default function Edit() {
@@ -94,7 +94,7 @@ export default function Edit() {
 
   return (
     <div className='Header Main-header'>
-      <img src={`${imageUri}marvelLogo.jpeg`} alt='Marvel Logo' />
+      <img src={marvelLogo} alt='Marvel Logo' />
       <div
         className='edit-container'
         style={{ backgroundImage: `url(${originalThumbnail})` }}

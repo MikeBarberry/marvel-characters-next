@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Snackbar from '@mui/material/Snackbar';
 
-import { apiUri, imageUri } from '../lib/adjustedUris';
+import { apiUri, marvelLogo } from '../lib/utils';
 import timeout from '../lib/timeout';
 import { StyledLoadingButton } from '../styles/styledComponentProvider';
 
@@ -57,13 +57,8 @@ export default function Add() {
 
   return (
     <div className='Header Main-header'>
-      <img src={`${imageUri}marvelLogo.jpeg`} alt='Marvel Logo' />
-      <div
-        className='add-container'
-        style={{
-          backgroundImage: 'url("' + imageUri + 'addPageBackground.jpeg")',
-        }}
-      >
+      <img src={marvelLogo} alt='Marvel Logo' />
+      <div className='add-container'>
         <label>
           Name:
           <input

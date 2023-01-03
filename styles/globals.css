@@ -143,6 +143,7 @@ input[type='submit']:hover {
 }
 
 .add-container {
+  background-image: url('https://marvel-characters-next.s3.us-west-2.amazonaws.com/addPageBackground.jpeg');
   min-height: 700px;
   background-position: center;
   background-repeat: no-repeat;

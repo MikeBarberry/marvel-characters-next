@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
 
-import { apiUri, imageUri } from '../lib/adjustedUris';
+import { apiUri, marvelLogo } from '../lib/utils';
 import { StyledLink } from '../styles/styledComponentProvider';
 import CharacterCard from '../components/CharacterCard';
 import LoadIndicator from '../components/LoadIndicator';
@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <div className='Header Main-header'>
-      <img src={`${imageUri}marvelLogo.jpeg`} alt='Marvel Logo' />
+      <img src={marvelLogo} alt='Marvel Logo' />
       <StyledLink href='/add'>Add</StyledLink>
       <div className='hero-list'>
         {data &&
