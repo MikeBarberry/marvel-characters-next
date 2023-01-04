@@ -1,4 +1,3 @@
-# This config won't work locally because I prefix static assests with main to accomodate the stage name in production. Running next build automatically sets the NODE_ENV to production
 FROM public.ecr.aws/lambda/nodejs:18
 WORKDIR ${LAMBDA_TASK_ROOT}
 COPY ./ ./

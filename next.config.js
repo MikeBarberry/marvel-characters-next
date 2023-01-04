@@ -7,9 +7,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  assetPrefix: isProd
+  /* assetPrefix: isProd
     ? 'https://ekkow2ojlk.execute-api.us-west-2.amazonaws.com/main'
-    : undefined,
+    : undefined, */
   output: 'standalone',
 };
 

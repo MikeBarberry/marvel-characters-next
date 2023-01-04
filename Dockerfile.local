@@ -1,5 +1,0 @@
-# TODO: Update this file to run locally. I think next dev bypasses my custom server config 
-FROM node:lts-bullseye
-COPY ./ /app
-RUN npm install
-CMD ["node", "lambdaServer.js"]
