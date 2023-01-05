@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 import useSWR from 'swr';
 
 import { apiUri, marvelLogo } from '../lib/utils';
@@ -27,7 +28,12 @@ export default function Home() {
 
   return (
     <div className='Header Main-header'>
-      <img src={marvelLogo} alt='Marvel Logo' />
+      <Image
+        src={marvelLogo}
+        alt='Marvel Logo'
+        width={680}
+        height={180}
+      />
       <StyledLink href='/add'>Add</StyledLink>
       <div className='hero-list'>
         {data &&

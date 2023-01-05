@@ -15,23 +15,22 @@ export default function CharacterCard({ character, isHidden, toggleHidden }) {
   }, [editButtonClicked]);
 
   return (
-    <div
-      className='card'
-      key={_id}>
+    <div className='card' key={_id}>
       <h2>{name}</h2>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={thumbnail}
         alt={name}
         className='hero-image'
-        onClick={toggleHidden}></img>
+        onClick={toggleHidden}
+      ></img>
       {isHidden ? null : <p className='description'>{description}</p>}
       <button
         className='button'
         onClick={() => {
           setEditButtonClicked(true);
           router.push('/edit');
-        }}>
+        }}
+      >
         Edit
       </button>
     </div>

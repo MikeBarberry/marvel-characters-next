@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import Snackbar from '@mui/material/Snackbar';
 
 import { apiUri, marvelLogo } from '../lib/utils';
@@ -56,7 +57,12 @@ export default function Add() {
 
   return (
     <div className='Header Main-header'>
-      <img src={marvelLogo} alt='Marvel Logo' />
+      <Image
+        src={marvelLogo}
+        alt='Marvel Logo'
+        width={680}
+        height={180}
+      />
       <div className='add-container'>
         <label>
           Name:
@@ -97,8 +103,7 @@ export default function Add() {
         <StyledLoadingButton
           color='primary'
           loading={isLoading}
-          onClick={handleSubmit}
-        >
+          onClick={handleSubmit}>
           Submit
         </StyledLoadingButton>
         <Snackbar

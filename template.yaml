@@ -10,8 +10,10 @@ Globals:
 Parameters:
   CertificateArn:
     Type: String
+    Default: '{{resolve:ssm:CertificateArn:1}}'
   HostedZoneId:
     Type: String
+    Default: '{{resolve:ssm:HostedZoneId:1}}'
 
 Resources:
   MarvelCharactersNextApi:

@@ -8,7 +8,3 @@ s3_prefix = "marvel-characters"
 region = "us-west-2"
 capabilities = "CAPABILITY_IAM"
 image_repositories = ["MarvelCharactersNextFunction=095138843627.dkr.ecr.us-west-2.amazonaws.com/marvelcharacters04b4a9a6/marvelcharactersnextfunctione1cf85b5repo"]
-parameter_overrides = [
-  "CertificateArn=arn:aws:acm:us-west-2:095138843627:certificate/053370e7-4e0a-40d9-bd7f-0737a9b1597c",
-  "HostedZoneId=Z00638712YNSXVI9JO7CK"
-]

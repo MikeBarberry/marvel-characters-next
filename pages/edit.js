@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { StyledLoadingButton } from '../styles/styledComponentProvider';
 import Snackbar from '@mui/material/Snackbar';
 
@@ -93,11 +94,15 @@ export default function Edit() {
 
   return (
     <div className='Header Main-header'>
-      <img src={marvelLogo} alt='Marvel Logo' />
+      <Image
+        src={marvelLogo}
+        alt='Marvel Logo'
+        width={680}
+        height={180}
+      />
       <div
         className='edit-container'
-        style={{ backgroundImage: `url(${originalThumbnail})` }}
-      >
+        style={{ backgroundImage: `url(${originalThumbnail})` }}>
         <br />
         <label>
           Name:
@@ -129,11 +134,15 @@ export default function Edit() {
             required
           />
         </label>
-        <StyledLoadingButton loading={isSubmitLoading} onClick={handleSubmit}>
+        <StyledLoadingButton
+          loading={isSubmitLoading}
+          onClick={handleSubmit}>
           Submit
         </StyledLoadingButton>
         <br />
-        <StyledLoadingButton loading={isDeleteLoading} onClick={handleDelete}>
+        <StyledLoadingButton
+          loading={isDeleteLoading}
+          onClick={handleDelete}>
           Delete
         </StyledLoadingButton>
         <Snackbar
