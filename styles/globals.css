@@ -70,11 +70,6 @@ input[type='submit']:hover {
   opacity: 1;
 }
 
-.card h2 {
-  max-width: 400px;
-  max-height: 50;
-}
-
 .Header {
   text-align: center;
 }
@@ -94,6 +89,11 @@ input[type='submit']:hover {
   margin: 2rem;
 }
 
+.hero-image-wrapper:hover {
+  opacity: 0.8;
+  transform: scale(1.2);
+}
+
 .card {
   text-align: center;
   border: grey solid 1px;
@@ -106,18 +106,9 @@ input[type='submit']:hover {
   box-shadow: 3px 4px #e04b52;
 }
 
-.hero-image {
-  justify-self: center;
-  height: auto;
-  max-height: 250px;
-  width: auto;
-  max-width: 250px;
-  border-radius: 15px;
-}
-
-.hero-image:hover {
-  opacity: 0.8;
-  transform: scale(1.2);
+.card h2 {
+  max-width: 400px;
+  max-height: 50;
 }
 
 .description {
@@ -143,7 +134,7 @@ input[type='submit']:hover {
 }
 
 .add-container {
-  background-image: url('https://marvel-characters-next.s3.us-west-2.amazonaws.com/addPageBackground.jpeg');
+  background-image: url('/addPageBackground.jpeg');
   min-height: 700px;
   background-position: center;
   background-repeat: no-repeat;
