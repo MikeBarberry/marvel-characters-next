@@ -36,3 +36,5 @@ yarn-error.log*
 
 .aws-sam/
 events
+run.sh
+TODO.txt

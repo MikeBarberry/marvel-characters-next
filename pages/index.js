@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import useSWR from 'swr';
 
 import { apiUri, marvelLogo } from '../lib/utils';
 import { StyledLink } from '../styles/styledComponentProvider';
 import CharacterCard from '../components/CharacterCard';
 import LoadIndicator from '../components/LoadIndicator';
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
 export default function Home() {
-  const { data, error, isLoading } = useSWR(`${apiUri}/`, fetcher);
+  const [isLoading, setIsLoading] = useState(true);
   const [isHidden, setIsHidden] = useState(true);
+  const [characters, setCharacters] = useState([]);
+
+  useEffect(() => {
+    let isSubscribed = true;
+    if (isSubscribed) {
+      async function fetchData() {
+        const res = await fetch(`${apiUri}/`);
+        const json = await res.json();
+        setCharacters(json);
+        setIsLoading(false);
+      }
+      fetchData();
+    }
+    return () => (isSubscribed = false);
+  }, []);
 
   function toggleHidden() {
     setIsHidden((prevState) => !prevState);
   }
 
-  if (error) return <div>An error occurred fetching the data</div>;
   if (isLoading) {
     return (
       <div className='Header Main-header'>
@@ -36,15 +47,14 @@ export default function Home() {
       />
       <StyledLink href='/add'>Add</StyledLink>
       <div className='hero-list'>
-        {data &&
-          data.characters.map((character) => (
-            <CharacterCard
-              key={character.name}
-              character={character}
-              toggleHidden={toggleHidden}
-              isHidden={isHidden}
-            />
-          ))}
+        {characters.map((character) => (
+          <CharacterCard
+            key={character.name}
+            character={character}
+            toggleHidden={toggleHidden}
+            isHidden={isHidden}
+          />
+        ))}
       </div>
     </div>
   );
