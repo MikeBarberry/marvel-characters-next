@@ -36,6 +36,10 @@ Resources:
 
   MarvelCharactersNextFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      DockerTag: nodejs18.x-v1
+      DockerContext: .
+      Dockerfile: Dockerfile
     Properties:
       Environment:
         Variables:
@@ -51,7 +55,6 @@ Resources:
               Ref: MarvelCharactersNextApi
             Path: /
             Method: ANY
-
         ProxyPlus:
           Type: Api
           Properties:
@@ -60,21 +63,11 @@ Resources:
             Path: /{proxy+}
             Method: ANY
 
-    Metadata:
-      DockerTag: nodejs18.x-v1
-      DockerContext: .
-      Dockerfile: Dockerfile
-
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   MarvelCharactersNextApi:
     Description: 'API Gateway endpoint URL'
-    Value: !Sub 'https://${MarvelCharactersNextApi.DomainName}'
-  MarvelCharactersNextFunction:
-    Description: 'Lambda Function ARN'
-    Value: !GetAtt MarvelCharactersNextFunction.Arn
-  MarvelCharactersNextFunctionIamRole:
-    Description: 'Implicit IAM Role created for function'
-    Value: !GetAtt MarvelCharactersNextFunctionRole.Arn
+    Value:
+      Fn::Join:
+        - ''
+        - - 'https://'
+          - Fn::GetAtt: [MarvelCharactersNextApi, DomainName]
